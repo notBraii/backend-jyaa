@@ -56,11 +56,11 @@ public class Ingredient extends HttpServlet {
 		if (action == null) {
 			showList(out, ingredientDAO.getAll());
 		} else if (action.equals("create")) {
-			ResourceTagDAO resourceDAO = new ResourceTagDAO();
-			showCreateForm(out, resourceDAO.getAll());
+			ResourceTagDAO resourceTagDAO = new ResourceTagDAO();
+			showCreateForm(out, resourceTagDAO.getAll());
 		} else if (ingredientId != null) {
-			ResourceTagDAO resourceDAO = new ResourceTagDAO();
-			showEditForm(out, ingredientId, ingredientDAO, resourceDAO.getAll());
+			ResourceTagDAO resourceTagDAO = new ResourceTagDAO();
+			showEditForm(out, ingredientId, ingredientDAO, resourceTagDAO.getAll());
 		} else {
 			response.sendRedirect(request.getContextPath() + "/ingredients");
 		}
@@ -85,7 +85,7 @@ public class Ingredient extends HttpServlet {
 		// Rows
 		for (models.Ingredient ingredient : ingredients) {
 			out.println("<tr>");
-			out.println("<td>" + ingredient.getResource().getName() + "</td>");
+			out.println("<td>" + ingredient.getResourceTag().getName() + "</td>");
 			out.println("<td>" + ingredient.getMagnitude().getValue() + " " + ingredient.getMagnitude().getUnit()
 					+ "</td>");
 
@@ -135,7 +135,7 @@ public class Ingredient extends HttpServlet {
 			out.println("<label for='resource'>Recurso:</label>");
 			out.println("<select id='resource' name='resourceId'>");
 			for (models.ResourceTag resource : resources) {
-				String selected = resource.getId().equals(ingredient.getResource().getId()) ? "selected" : "";
+				String selected = resource.getId().equals(ingredient.getResourceTag().getId()) ? "selected" : "";
 				out.println("<option value='" + resource.getId() + "' " + selected + ">" + resource.getName()
 						+ "</option>");
 			}
@@ -193,7 +193,7 @@ public class Ingredient extends HttpServlet {
 				models.ResourceTag resource = resourceDAO.get(resourceId);
 				double quantity = Double.parseDouble(request.getParameter("quantity"));
 				String unit = request.getParameter("unit");
-				ingredient.setResource(resource);
+				ingredient.setResourceTag(resource);
 				ingredient.setMagnitude(new Magnitude(quantity, unit));
 				ingredientDAO.update(ingredient, null);
 			}

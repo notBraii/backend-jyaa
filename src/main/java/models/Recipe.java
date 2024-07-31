@@ -11,20 +11,25 @@ public class Recipe {
 	
 	private String name;
 	
+	private String description;
 	@ManyToOne
 	private Category category;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Ingredient> ingredients;
-
+	
+	private String steps;
+	
 	// Constructors
 	public Recipe() {
 	}
 	
-	public Recipe(String name, List<Ingredient> ingredients, Category category) {
+	public Recipe(String name, String description, Category category, List<Ingredient> ingredients, String steps) {
 		this.name = name;
-		this.ingredients = ingredients;
+		this.description = description;
 		this.category = category;
+		this.ingredients = ingredients;
+		this.steps = steps;
 	}
 
 	// Getters
@@ -43,7 +48,14 @@ public class Recipe {
 	public Category getCategory() {
 		return category;
 	}
-
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public String getSteps() {
+		return steps;
+	}
 	// Setters
 	public void setId(Long id) {
 		this.id = id;
@@ -59,5 +71,13 @@ public class Recipe {
 	
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public void setSteps(String steps) {
+		this.steps = steps;
 	}
 }

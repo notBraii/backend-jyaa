@@ -20,14 +20,14 @@ public class Ingredient {
 	}
 	
 	public Ingredient(ResourceTag resourceTag, Magnitude magnitude) {
-		this.setResource(resourceTag);
+		this.setResourceTag(resourceTag);
 		this.setMagnitude(magnitude);
 	}
 	// Getters
 	public Long getId() {
 		return id;
 	}
-	public ResourceTag getResource() {
+	public ResourceTag getResourceTag() {
 		return resourceTag;
 	}
 	
@@ -40,7 +40,7 @@ public class Ingredient {
 		this.id = id;
 	}
 	
-	public void setResource(ResourceTag resourceTag) {
+	public void setResourceTag(ResourceTag resourceTag) {
 		this.resourceTag = resourceTag;
 	}
 

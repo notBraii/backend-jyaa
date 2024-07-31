@@ -45,7 +45,7 @@ public class TestRecipe {
 			
 			// Create recipe
             List<Ingredient> ingredients = Arrays.asList(flourIngredient, sugarIngredient);
-            Recipe cakeRecipe = new Recipe("Cake", ingredients, breadedCategory);
+            Recipe cakeRecipe = new Recipe("Cake", "Recipe for cake.", breadedCategory, ingredients, "Paso 1, paso 2, paso 3.");
                         
             // Persist recipe
             em.persist(cakeRecipe);
@@ -56,7 +56,7 @@ public class TestRecipe {
             Recipe persistedRecipe = em.find(Recipe.class, cakeRecipe.getId());
             System.out.println("Recipe: " + persistedRecipe.getName());
             persistedRecipe.getIngredients().forEach(ingredient -> {
-                System.out.println("Ingredient: " + ingredient.getResource().getName() + ", Quantity: " + ingredient.getMagnitude().getValue() + " " + ingredient.getMagnitude().getUnit());
+                System.out.println("Ingredient: " + ingredient.getResourceTag().getName() + ", Quantity: " + ingredient.getMagnitude().getValue() + " " + ingredient.getMagnitude().getUnit());
             });
             
 		} catch (Exception e) {
