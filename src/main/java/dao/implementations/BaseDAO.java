@@ -58,7 +58,7 @@ public abstract class BaseDAO<T> implements DAO<T> {
 		} catch (EntityNotFoundException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RuntimeException("Error retrieving entity with ID " + id, e);
+			throw new RuntimeException("Error retrieving entity with ID " + id + ". " + e);
 		}
 	}
 
@@ -76,10 +76,10 @@ public abstract class BaseDAO<T> implements DAO<T> {
 			return query.getResultList();
 		} catch (PersistenceException e) {
 			// Manejo específico para excepciones relacionadas con la persistencia
-			throw new RuntimeException("Error retrieving all entities: " + e.getMessage(), e);
+			throw new RuntimeException("Error retrieving all entities: " + e.getMessage() + e);
 		} catch (Exception e) {
 			// Manejo general para cualquier otro tipo de excepción
-			throw new RuntimeException("Unexpected error occurred while retrieving all entities.", e);
+			throw new RuntimeException("Unexpected error occurred while retrieving all entities." + e);
 		}
 	}
 
@@ -108,7 +108,7 @@ public abstract class BaseDAO<T> implements DAO<T> {
 			System.out.println();
 			if (etx.isActive())
 				etx.rollback();
-			throw new RuntimeException("Error saving entity.", e);
+			throw new RuntimeException("Error saving entity." + e);
 		}
 	}
 
@@ -130,7 +130,7 @@ public abstract class BaseDAO<T> implements DAO<T> {
 		} catch (Exception e) {
 			if (etx.isActive())
 				etx.rollback();
-			throw new RuntimeException("Error updating entity.", e);
+			throw new RuntimeException("Error updating entity." + e);
 		}
 	}
 
@@ -157,7 +157,7 @@ public abstract class BaseDAO<T> implements DAO<T> {
 		} catch (Exception e) {
 			if (etx.isActive())
 				etx.rollback();
-			throw new RuntimeException("Error deleting entity with ID " + id, e);
+			throw new RuntimeException("Error deleting entity with ID " + id + ". " + e);
 		}
 	}
 

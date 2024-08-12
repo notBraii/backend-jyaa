@@ -23,9 +23,9 @@ public class Delivery {
 	public Delivery() {
 	}
 
-	public Delivery(Integer stock, Product producto, Date deliverDate, SalesChannel channel) {
+	public Delivery(Integer stock, Product product, Date deliverDate, SalesChannel channel) {
 		this.stock = stock;
-		this.product = producto;
+		this.product = product;
 		this.deliverDate = deliverDate;
 		this.channel = channel;
 	}
@@ -39,7 +39,7 @@ public class Delivery {
 		return stock;
 	}
 
-	public Product getProducto() {
+	public Product getProduct() {
 		return product;
 	}
 
@@ -60,8 +60,8 @@ public class Delivery {
 		this.stock = stock;
 	}
 
-	public void setProducto(Product producto) {
-		this.product = producto;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public void setDeliverDate(Date deliverDate) {

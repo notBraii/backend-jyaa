@@ -10,14 +10,16 @@ public class ProducingFamily {
 	private Long id;
 	private String name;
 	private String location;
+	private String contact;
 
 	// Constructors
 	public ProducingFamily() {
 	}
 	
-	public ProducingFamily(String name, String location) {
+	public ProducingFamily(String name, String location, String contact) {
 		this.name = name;
 		this.location = location;
+		this.contact = contact;
 	}
 
 	// Getters
@@ -32,6 +34,10 @@ public class ProducingFamily {
 	public String getLocation() {
 		return location;
 	}
+	
+	public String getContact() {
+		return contact;
+	}
 
 	// Setters
 	public void setId(Long id) {
@@ -44,6 +50,10 @@ public class ProducingFamily {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 }

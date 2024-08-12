@@ -6,33 +6,37 @@ import javax.persistence.TypedQuery;
 
 import org.jvnet.hk2.annotations.Service;
 
-import models.Recipe;
+import models.ProductGroup;
 
 @Service
-public class RecipeDAO extends BaseDAO<Recipe> {
+public class ProductGroupDAO extends BaseDAO<ProductGroup> {
 
-	public RecipeDAO() {
+	public ProductGroupDAO() {
 	}
-	
+
 	@Override
-	protected Class<Recipe> getEntityClass() {
+	protected Class<ProductGroup> getEntityClass() {
 		// TODO Auto-generated method stub
-		return Recipe.class;
+		return ProductGroup.class;
 	}
 
-	public List<Recipe> search(String categoryName) {
+	public List<ProductGroup> search(String name, String categoryName) {
 		StringBuilder jpql = new StringBuilder("SELECT p FROM ProductGroup p WHERE 1=1");
 
 // Agregar filtros a la consulta JPQL
-		
+		if (name != null && !name.isEmpty()) {
+			jpql.append(" AND p.name LIKE :name");
+		}
 		if (categoryName != null && !categoryName.isEmpty()) {
 			jpql.append(" AND p.category.name LIKE :categoryName");
 		}
 		
-		TypedQuery<Recipe> query = em.createQuery(jpql.toString(), Recipe.class);
+		TypedQuery<ProductGroup> query = em.createQuery(jpql.toString(), ProductGroup.class);
 
 // Establecer parámetros de la consulta
-		
+		if (name != null && !name.isEmpty()) {
+			query.setParameter("name", "%" + name + "%");
+		}
 		if (categoryName != null && !categoryName.isEmpty()) {
 			query.setParameter("categoryName", "%" + categoryName + "%");
 		}
@@ -42,8 +46,8 @@ public class RecipeDAO extends BaseDAO<Recipe> {
 		// query.setFirstResult(firstResult);
 		// query.setMaxResults(size);
 
-		List<Recipe> results = query.getResultList();
+		List<ProductGroup> results = query.getResultList();
 		return results;
 	}
-	
+
 }

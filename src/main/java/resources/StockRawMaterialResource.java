@@ -1,5 +1,6 @@
 package resources;
 
+import java.util.Date;
 import java.util.List;
 
 import dao.implementations.StockRawMaterialDAO;
@@ -18,6 +19,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -60,6 +62,26 @@ public class StockRawMaterialResource {
 			ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
 			return Response.status(Status.NOT_FOUND).entity(errorResponse).build();
 		}
+	}
+	
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Search stockRawMaterial with pagination", description = "Search stockRawMaterial by various attributes with pagination.")
+	@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StockRawMaterial.class)))
+	@ApiResponse(responseCode = "500", description = "Internal server error")
+	public Response searchProducts(@QueryParam("resourceTagName") String resourceTagName,
+	                               @QueryParam("expiredAt") Date expiredAt
+//	                               @QueryParam("page") @DefaultValue("1") int page, 
+//	                               @QueryParam("size") @DefaultValue("5") int size
+	                               ) {
+	    try {
+	        List<StockRawMaterial> productGroups = stockRawMaterialDAO.search(resourceTagName, expiredAt);
+	        return Response.ok(productGroups).build();
+	    } catch (Exception e) {
+	        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+	    }
 	}
 
 	@POST

@@ -1,5 +1,6 @@
 package resources;
 
+import java.util.Date;
 import java.util.List;
 
 import dao.implementations.DeliveryDAO;
@@ -18,6 +19,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -62,6 +64,25 @@ public class DeliveryResource {
 		}
 	}
 
+	 @GET
+	    @Path("/search")
+	    @Produces(MediaType.APPLICATION_JSON)
+	    @Operation(summary = "Search deliveries", description = "Search deliveries by various attributes.")
+	    @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Delivery.class)))
+	    @ApiResponse(responseCode = "500", description = "Internal server error")
+	    public Response searchDeliveries(@QueryParam("stock") Integer stock,
+	                                     @QueryParam("deliverDate") Date deliverDate,
+	                                     @QueryParam("productGroupName") String productGroupName,
+	                                     @QueryParam("salesChannelName") String salesChannelName) {
+	        try {
+	            List<Delivery> deliveries = deliveryDAO.search(stock, deliverDate, productGroupName, salesChannelName);
+	            return Response.ok(deliveries).build();
+	        } catch (Exception e) {
+	            ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+	            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+	        }
+	    }
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Create a new delivery", description = "Creates a new delivery.")

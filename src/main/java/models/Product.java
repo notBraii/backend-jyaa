@@ -11,16 +11,18 @@ public class Product {
 	@Id @GeneratedValue
 	private Long id;
 	
-	private Integer batch;
+	@Column(unique=true)
+	private String batch;
 	private String name;
 	private Date productionDate;
 	private Integer quantity;
-	
+	private Double price;
+	private String imageURL;
 	@ManyToOne
-	private Category category;
+	private ProductGroup productGroup;
 	
 	@ElementCollection
-	private List<String> observations;
+	private List<String> observations = new ArrayList<>();
 	
 	@OneToOne
 	private Recipe recipe;
@@ -32,7 +34,7 @@ public class Product {
 	public Product() {	
 	}
 	
-	public Product(Integer batch, String name, Date productionDate, Integer quantity, List<String> observations, Recipe recipe, List<ProductResource> productResources, Category category) {
+	public Product(String batch, String name, Date productionDate, Integer quantity, List<String> observations, Recipe recipe, List<ProductResource> productResources, ProductGroup productGroup, String imageURL) {
 		this.batch = batch;
 		this.name = name;
 		this.productionDate = productionDate;
@@ -40,15 +42,34 @@ public class Product {
 		this.observations = observations;
 		this.recipe = recipe;
 		this.productResources = productResources;
-		this.category = category;
+		this.productGroup = productGroup;
+		this.imageURL = imageURL;
+		this.price = calculatePrice();
 	}
-
+	 // Método para calcular el precio en base a los ProductResources
+    private Double calculatePrice() {
+        double totalPrice = 0.0;
+        
+        for (ProductResource pr : productResources) {
+            StockResource stockResource = pr.getStockResource();
+            if (stockResource != null) {
+                double stockPrice = stockResource.getPrice();
+                double usedQuantity = pr.getUsedQuantity().getValue();
+                //String usedUnit = pr.getUsedQuantity().getUnit();
+                
+                
+                totalPrice += stockPrice * usedQuantity;
+            }
+        }
+        
+        return totalPrice;
+    }
 	// Getters
 	public Long getId() {
 		return id;
 	}
 	
-	public Integer getBatch() {
+	public String getBatch() {
 		return batch;
 	}
 
@@ -64,6 +85,10 @@ public class Product {
 		return quantity;
 	}
 
+	public Double getPrice() {
+		return price;
+	}
+
 	public List<String> getObservations() {
 		return new ArrayList<>(observations);
 	}
@@ -72,12 +97,16 @@ public class Product {
 		return recipe;
 	}
 
-	public List<ProductResource> getProductresources() {
+	public List<ProductResource> getProductResources() {
 		return productResources;
 	}
 	
-	public Category getCategory() {
-		return category;
+	public ProductGroup getProductGroup() {
+		return productGroup;
+	}
+	
+	public String getImageURL() {
+		return imageURL;
 	}
 
 	// Setters
@@ -85,7 +114,7 @@ public class Product {
 		this.id = id;
 	}
 	
-	public void setBatch(Integer batch) {
+	public void setBatch(String batch) {
 		this.batch = batch;
 	}
 
@@ -101,6 +130,10 @@ public class Product {
 		this.quantity = quantity;
 	}
 
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
 	public void setObservations(List<String> observations) {
 		this.observations = observations;
 	}
@@ -113,8 +146,12 @@ public class Product {
 		this.productResources = productResources;
 	}
 	
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setProductGroup(ProductGroup productGroup) {
+		this.productGroup = productGroup;
+	}
+	
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 }

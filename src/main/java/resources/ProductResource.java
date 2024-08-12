@@ -12,16 +12,19 @@ import io.swagger.v3.oas.annotations.media.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import models.Product;
+import utils.PaginatedResponse;
 
 @Path("/products")
 @Tag(name = "Products", description = "Operations related to products")
@@ -45,6 +48,39 @@ public class ProductResource {
 		}
 	}
 
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Search products with pagination", description = "Search products by various attributes with pagination.")
+	@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
+	@ApiResponse(responseCode = "500", description = "Internal server error")
+	public Response searchProducts(@QueryParam("name") List <String> names, 
+	                               @QueryParam("batch") String batch,
+//	                               @QueryParam("productionDate") String productionDate, 
+	                               @QueryParam("quantity") Integer quantity,
+//	                               @QueryParam("productGroup") Long productGroupId,
+	                               @QueryParam("productGroupName") String productGroupName,
+	                               @QueryParam("categoryName") String categoryName
+//	                               @QueryParam("page") @DefaultValue("1") int page, 
+//	                               @QueryParam("size") @DefaultValue("5") int size
+	                               ) {
+//	    Limitar el tamaño de página
+//	    int maxSize = 20; // Límite máximo
+//	    size = Math.min(size, maxSize); // Aplicar el límite
+
+	    try {
+	        List<Product> products = productDAO.search(names, batch, quantity, productGroupName, categoryName);
+	        //long totalItems = productDAO.count(name, batch, quantity, productGroupName, categoryName);
+	        //int totalPages = (int) Math.ceil((double) totalItems / size);
+
+	        //PaginatedResponse<Product> response = new PaginatedResponse<>(products, page, totalPages, totalItems, size);
+	        return Response.ok(products).build();
+	    } catch (Exception e) {
+	        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+	    }
+	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
