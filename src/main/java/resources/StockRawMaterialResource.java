@@ -67,7 +67,7 @@ public class StockRawMaterialResource {
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Operation(summary = "Search stockRawMaterial with pagination", description = "Search stockRawMaterial by various attributes with pagination.")
+	@Operation(summary = "Search stockRawMaterial ", description = "Search stockRawMaterial by various attributes.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StockRawMaterial.class)))
 	@ApiResponse(responseCode = "500", description = "Internal server error")
 	public Response searchProducts(@QueryParam("resourceTagName") String resourceTagName,

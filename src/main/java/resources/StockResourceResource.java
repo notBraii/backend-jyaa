@@ -18,6 +18,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -62,6 +63,25 @@ public class StockResourceResource {
 		}
 	}
 
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Search stockResources ", description = "Search stockResources by resourceTag name.")
+	@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StockResource.class)))
+	@ApiResponse(responseCode = "500", description = "Internal server error")
+	public Response searchProducts(@QueryParam("resourceTagName") String resourceTagName
+//	                               @QueryParam("page") @DefaultValue("1") int page, 
+//	                               @QueryParam("size") @DefaultValue("5") int size
+	                               ) {
+	    try {
+	        List<StockResource> stockResources = stockResourceDAO.search(resourceTagName);
+	        return Response.ok(stockResources).build();
+	    } catch (Exception e) {
+	        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+	    }
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Create a new stockResource", description = "Creates a new stockResource.")

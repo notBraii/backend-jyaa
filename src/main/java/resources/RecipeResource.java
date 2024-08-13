@@ -66,7 +66,7 @@ public class RecipeResource {
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Operation(summary = "Search recipes with pagination", description = "Search recipes by categoryName with pagination.")
+	@Operation(summary = "Search recipes ", description = "Search recipes by categoryName.")
 	@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Recipe.class)))
 	@ApiResponse(responseCode = "500", description = "Internal server error")
 	public Response searchProducts(@QueryParam("categoryName") String categoryName
