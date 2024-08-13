@@ -1,3 +1,10 @@
 /resources/
 /models/
 /dao/
+/config/
+/exception/
+/filters/
+/listeners/
+/services/
+/test/
+/utils/

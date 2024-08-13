@@ -1,9 +1,7 @@
 package dao.implementations;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;

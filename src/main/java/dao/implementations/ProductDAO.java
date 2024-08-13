@@ -1,6 +1,5 @@
 package dao.implementations;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,6 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.jvnet.hk2.annotations.Service;
 
 import exception.DuplicateEntityException;
-import jakarta.inject.Inject;
 import models.Product;
 import models.ProductGroup;
 import models.ProductResource;
@@ -24,12 +22,6 @@ import models.StockResource;
 
 @Service
 public class ProductDAO extends BaseDAO<Product> {
-
-	@Inject
-	private StockResourceDAO stockResourceDAO;
-
-	@Inject
-	private StockRawMaterialDAO stockRawMaterialDAO;
 
 	public ProductDAO() {
 	}
@@ -115,7 +107,7 @@ public class ProductDAO extends BaseDAO<Product> {
 						e.printStackTrace();
 					}
 				} else
-					stockResourceDAO.update(stockResource, null);
+					em.merge(stockResource);
 
 				totalPrice += (stockResource.getPrice() * productResource.getUsedQuantity().getValue());
 
@@ -275,7 +267,4 @@ public class ProductDAO extends BaseDAO<Product> {
 
 		return query.getSingleResult();
 	}
-
-	// @Override public{
-
 }

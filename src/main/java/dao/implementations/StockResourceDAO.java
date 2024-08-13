@@ -1,5 +1,6 @@
 package dao.implementations;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -8,6 +9,7 @@ import javax.persistence.TypedQuery;
 
 import org.jvnet.hk2.annotations.Service;
 
+import models.StockRawMaterial;
 import models.StockResource;
 
 @Service
@@ -38,4 +40,23 @@ public class StockResourceDAO extends BaseDAO<StockResource> {
         }
     }
 
+    public List<StockRawMaterial> search(String resourceTagName, Date startDate, Date endDate) {
+	    StringBuilder jpql = new StringBuilder("SELECT s FROM StockRawMaterial s WHERE 1=1");
+
+	    // Agregar filtros a la consulta JPQL
+	    if (resourceTagName != null && !resourceTagName.isEmpty()) {
+	        jpql.append(" AND s.group.name LIKE :resourceTagName");
+	    }
+
+	    TypedQuery<StockRawMaterial> query = em.createQuery(jpql.toString(), StockRawMaterial.class);
+
+	    // Establecer parámetros de la consulta
+	    if (resourceTagName != null && !resourceTagName.isEmpty()) {
+	        query.setParameter("resourceTagName", "%" + resourceTagName + "%");
+	    }
+
+	    // Obtener los resultados
+	    List<StockRawMaterial> results = query.getResultList();
+	    return results;
+	}
 }

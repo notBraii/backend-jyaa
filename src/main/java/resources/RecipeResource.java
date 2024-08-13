@@ -22,8 +22,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import models.Product;
-//import models.ProductGroup;
 import models.Recipe;
 
 @Path("/recipes")
