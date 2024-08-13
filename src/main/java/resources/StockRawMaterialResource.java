@@ -71,12 +71,13 @@ public class StockRawMaterialResource {
 	@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StockRawMaterial.class)))
 	@ApiResponse(responseCode = "500", description = "Internal server error")
 	public Response searchProducts(@QueryParam("resourceTagName") String resourceTagName,
-	                               @QueryParam("expiredAt") Date expiredAt
+	                               @QueryParam("startDate") Date startDate,
+	                               @QueryParam("endDate") Date endDate
 //	                               @QueryParam("page") @DefaultValue("1") int page, 
 //	                               @QueryParam("size") @DefaultValue("5") int size
 	                               ) {
 	    try {
-	        List<StockRawMaterial> productGroups = stockRawMaterialDAO.search(resourceTagName, expiredAt);
+	        List<StockRawMaterial> productGroups = stockRawMaterialDAO.search(resourceTagName, startDate, endDate);
 	        return Response.ok(productGroups).build();
 	    } catch (Exception e) {
 	        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());

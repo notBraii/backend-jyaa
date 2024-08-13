@@ -1,5 +1,6 @@
 package dao.implementations;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,34 +22,48 @@ public class StockRawMaterialDAO extends BaseDAO<StockRawMaterial>{
 		return StockRawMaterial.class;
 	}
 
-	public List<StockRawMaterial> search(String resourceTagName, Date expiredAt) {
-		StringBuilder jpql = new StringBuilder("SELECT s FROM StockRawMaterial s WHERE 1=1");
+	public List<StockRawMaterial> search(String resourceTagName, Date startDate, Date endDate) {
+	    StringBuilder jpql = new StringBuilder("SELECT s FROM StockRawMaterial s WHERE 1=1");
 
-// Agregar filtros a la consulta JPQL
-		if (resourceTagName != null && !resourceTagName.isEmpty()) {
-			jpql.append(" AND s.group.name LIKE :resourceTagName");
-		}
-		if (expiredAt != null) {
-			jpql.append(" AND s.expiredAt LIKE :expiredAt");
-		}
-		
-		TypedQuery<StockRawMaterial> query = em.createQuery(jpql.toString(), StockRawMaterial.class);
+	    // Agregar filtros a la consulta JPQL
+	    if (resourceTagName != null && !resourceTagName.isEmpty()) {
+	        jpql.append(" AND s.group.name LIKE :resourceTagName");
+	    }
+	    if (startDate != null && endDate != null) {
+	        jpql.append(" AND s.expiredAt BETWEEN :startDate AND :endDate");
+	    } else if (startDate != null) {
+	        jpql.append(" AND s.expiredAt >= :startDate");
+	    } else if (endDate != null) {
+	        jpql.append(" AND s.expiredAt <= :endDate");
+	    }
 
-// Establecer parámetros de la consulta
-		if (resourceTagName != null && !resourceTagName.isEmpty()) {
-			query.setParameter("resourceTagName", "%" + resourceTagName+ "%");
-		}
-		if (expiredAt != null ) {
-			query.setParameter("expiredAt", "%" + expiredAt + "%");
-		}
+	    TypedQuery<StockRawMaterial> query = em.createQuery(jpql.toString(), StockRawMaterial.class);
 
-// Aplicar la paginación
-		// int firstResult = (page - 1) * size;
-		// query.setFirstResult(firstResult);
-		// query.setMaxResults(size);
+	    // Establecer parámetros de la consulta
+	    if (resourceTagName != null && !resourceTagName.isEmpty()) {
+	        query.setParameter("resourceTagName", "%" + resourceTagName + "%");
+	    }
+	    if (startDate != null) {
+	        query.setParameter("startDate", normalizeDate(startDate));
+	    }
+	    if (endDate != null) {
+	        query.setParameter("endDate", normalizeDate(endDate));
+	    }
 
-		List<StockRawMaterial> results = query.getResultList();
-		return results;
+	    // Obtener los resultados
+	    List<StockRawMaterial> results = query.getResultList();
+	    return results;
+	}
+
+	// Método para normalizar la fecha y eliminar la hora
+	private Date normalizeDate(Date date) {
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+	    cal.set(Calendar.HOUR_OF_DAY, 0);
+	    cal.set(Calendar.MINUTE, 0);
+	    cal.set(Calendar.SECOND, 0);
+	    cal.set(Calendar.MILLISECOND, 0);
+	    return cal.getTime();
 	}
 	
 }
