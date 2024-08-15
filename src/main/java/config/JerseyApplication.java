@@ -17,7 +17,7 @@ public class JerseyApplication extends ResourceConfig {
 	 */
 	public JerseyApplication() {
 		register(new ApplicationBinder()); // Register the binder for dependency injection
-		//register(JWTAuthenticationFilter.class); // Register JWT filter
+		register(JWTAuthenticationFilter.class); // Register JWT filter
 		packages(true, "resources"); // Scan the "resources" package for JAX-RS resources
 	}
 }

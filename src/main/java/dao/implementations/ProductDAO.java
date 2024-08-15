@@ -50,10 +50,6 @@ public class ProductDAO extends BaseDAO<Product> {
 				throw new EntityNotFoundException("ProductGroup not found.");
 			}
 
-			if (productGroup.getStock() < product.getQuantity()) {
-				throw new Exception("Not enough stock in the product group.");
-			}
-
 			Set<Long> stockResourceIds = new HashSet<>();
 
 			boolean isRawMaterial = false;

@@ -19,7 +19,7 @@ public class Recipe {
 	private List<Ingredient> ingredients;
 	
 	private String steps;
-	
+	private String imageURL;
 	// Constructors
 	public Recipe() {
 	}
@@ -30,6 +30,15 @@ public class Recipe {
 		this.category = category;
 		this.ingredients = ingredients;
 		this.steps = steps;
+	}
+	
+	public Recipe(String name, String description, Category category, List<Ingredient> ingredients, String steps, String imageURL) {
+		this.name = name;
+		this.description = description;
+		this.category = category;
+		this.ingredients = ingredients;
+		this.steps = steps;
+		this.imageURL = imageURL;
 	}
 
 	// Getters
@@ -56,6 +65,10 @@ public class Recipe {
 	public String getSteps() {
 		return steps;
 	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
 	// Setters
 	public void setId(Long id) {
 		this.id = id;
@@ -80,4 +93,9 @@ public class Recipe {
 	public void setSteps(String steps) {
 		this.steps = steps;
 	}
+	
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
 }

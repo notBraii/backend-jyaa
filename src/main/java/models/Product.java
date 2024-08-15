@@ -17,7 +17,7 @@ public class Product {
 	private Date productionDate;
 	private Integer quantity;
 	private Double price;
-	private String imageURL;
+	
 	@ManyToOne
 	private ProductGroup productGroup;
 	
@@ -34,7 +34,7 @@ public class Product {
 	public Product() {	
 	}
 	
-	public Product(String batch, String name, Date productionDate, Integer quantity, List<String> observations, Recipe recipe, List<ProductResource> productResources, ProductGroup productGroup, String imageURL) {
+	public Product(String batch, String name, Date productionDate, Integer quantity, List<String> observations, Recipe recipe, List<ProductResource> productResources, ProductGroup productGroup) {
 		this.batch = batch;
 		this.name = name;
 		this.productionDate = productionDate;
@@ -43,7 +43,6 @@ public class Product {
 		this.recipe = recipe;
 		this.productResources = productResources;
 		this.productGroup = productGroup;
-		this.imageURL = imageURL;
 		this.price = calculatePrice();
 	}
 	 // Método para calcular el precio en base a los ProductResources
@@ -105,9 +104,6 @@ public class Product {
 		return productGroup;
 	}
 	
-	public String getImageURL() {
-		return imageURL;
-	}
 
 	// Setters
 	public void setId(Long id) {
@@ -150,8 +146,4 @@ public class Product {
 		this.productGroup = productGroup;
 	}
 	
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
-
 }
